@@ -1,6 +1,6 @@
 # AirScort
 
-Identifying and Tracking an object with an image processing
+Identifying and Tracking an object via  image processing
 For Unmanned Aerial Vehicle.
 
 
