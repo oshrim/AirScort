@@ -15,7 +15,7 @@ def select_ROI(event, x, y, flags, param): ##function to select the points by pr
     
     global frame, roiPts, inputMode
 
-	if inputMode and event == cv2.EVENT_LBUTTONDOWN and len(roiPts) < 4: ## check if input mode is available and start
+    if inputMode and event == cv2.EVENT_LBUTTONDOWN and len(roiPts) < 4: ## check if input mode is available and start
         roiPts.append((x, y))
         cv2.circle(frame, (x, y), 4, (0, 255, 0), 2) #create a circle on the needed frame
         cv2.imshow("frame", frame) # show the circle on the frame
