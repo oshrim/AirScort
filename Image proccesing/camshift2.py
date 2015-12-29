@@ -26,7 +26,7 @@ def determine_ROI_for_first_time():
     
     global inputMode, roiBox, roiPts, roiHist
     
-	# set input mode and copy the frame to stand still
+    # set input mode and copy the frame to stand still
     inputMode = True
     orig = frame.copy()
 
@@ -76,8 +76,11 @@ def main():
 
     # grab the reference to the camera
     
-    camera = cv2.VideoCapture("http://10.5.5.9:8080/live/amba.m3u8")
-
+    #for gopro
+    #camera = cv2.VideoCapture("http://10.5.5.9:8080/live/amba.m3u8") 
+    
+    #for comuter camera
+    camera = cv2.VideoCapture(0)
     
     
     # setup the mouse callback
