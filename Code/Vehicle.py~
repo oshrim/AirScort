@@ -44,10 +44,10 @@ class Vehicle():
     def air_speed(self,speed):
         self.vehicle.airspeed=speed
         
-            self.vehicle.simple_goto(dest)
     def simpleGoTo(self,lat,lon,height,groundSpeed =-1):
         dest = LocationGlobalRelative(lat, lon, height)
         if groundSpeed == -1:
+            self.vehicle.simple_goto(dest)
         else:
             self.vehicle.simple_goto(dest,groundspeed = groundSpeed)
             
