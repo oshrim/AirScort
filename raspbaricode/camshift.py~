@@ -21,9 +21,10 @@ def select_ROI(event, x, y, flags, param): ##function to select the points by pr
         roiPts.append((x, y))
         cv2.circle(frame, (x, y), 4, (0,0,255),2) #create a circle on the needed frame
         cv2.imshow("frame", frame) # show the circle on the frame
+       
+    
 
-
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def determine_ROI_for_first_time():
     
     global inputMode, roiBox, roiPts, roiHist
@@ -56,7 +57,7 @@ def determine_ROI_for_first_time():
     return (tl[0], tl[1], br[0], br[1])
     
 
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def get_centerRoi(pts):
     global centerRoi
     
@@ -66,7 +67,7 @@ def get_centerRoi(pts):
     centerRoi = (x,y) 
     return centerRoi
 
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def get_centerScreen(frame):
     global centerScr
     
@@ -78,61 +79,43 @@ def get_centerScreen(frame):
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~move~gimbel~up~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
-def gimbel_up(pts,centerRoi,tl):
+def gimbel_up(centerScr):
     
-    x = centerRoi[0]
-    y=tl[1]
+    x=0
+    y =(centerScr[1]*2)-75
 
     font = cv2.FONT_HERSHEY_SIMPLEX
-    cv2.putText(frame,'move up',(x-60,y-105), font,1,(0,0,255),2)
+    cv2.putText(frame,'move cam up',(x,y), font,1,(248,248,255),2)
     
-    cv2.line(frame,(x,y-100),(x-20,y-80),(255,0,0),2) # print line
-    cv2.line(frame,(x,y),(x,y-100),(255,0,0),2) # print line
-    cv2.line(frame,(x,y-100),(x+20,y-80),(255,0,0),2) # print line
-  
 #~~~~~~~~~~~~~~~~~~~~~~~~~~move~gimbel~down~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
-def gimbel_down(pts,centerRoi,br):
+def gimbel_down(centerScr):
 
-    x = centerRoi[0]
-    y=br[1]
+    x=0
+    y =(centerScr[1]*2)-75
 
     font = cv2.FONT_HERSHEY_SIMPLEX
-    cv2.putText(frame,'move down',(x-80,y+125), font,1,(0,0,255),2)
-    
-    cv2.line(frame,(x,y+100),(x-20,y+80),(255,0,0),2) # print line
-    cv2.line(frame,(x,y),(x,y+100),(255,0,0),2) # print line
-    cv2.line(frame,(x,y+100),(x+20,y+80),(255,0,0),2) # print line
- 
+    cv2.putText(frame,'move cam down',(x,y), font,1,(248,248,255),2)
+
  
 #~~~~~~~~~~~~~~~~~~~~~~~~~~move~gimbel~right~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def gimbel_right(pts,centerRoi,br):
+def gimbel_right(centerScr):
 
-    x=br[0]
-    y = centerRoi[1]
+    x=0
+    y =(centerScr[1]*2)-50
 
     font = cv2.FONT_HERSHEY_SIMPLEX
-    cv2.putText(frame,'move right',(x,y-25), font,1,(0,0,255),2)
-    
-    cv2.line(frame,(x+100,y),(x+80,y-20),(255,0,0),2) # print line
-    cv2.line(frame,(x,y),(x+100,y),(255,0,0),2) # print line
-    cv2.line(frame,(x+100,y),(x+80,y+20),(255,0,0),2) # print line
-
-
+    cv2.putText(frame,'move cam right',(x,y), font,1,(248,248,255),2)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~move~gimbel~left~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def gimbel_left(pts,centerRoi,tl):
+def gimbel_left(centerScr):
 
-    x=tl[0]
-    y = centerRoi[1]
+    x=0
+    y =(centerScr[1]*2)-50
 
     font = cv2.FONT_HERSHEY_SIMPLEX
-    cv2.putText(frame,'move left',(x-100,y-25), font,1,(0,0,255),2)
+    cv2.putText(frame,'move cam left',(x,y), font,1,(248,248,255),2)
     
-    cv2.line(frame,(x-100,y),(x-80,y-20),(255,0,0),2) # print line
-    cv2.line(frame,(x,y),(x-100,y),(255,0,0),2) # print line
-    cv2.line(frame,(x-100,y),(x-80,y+20),(255,0,0),2) # print line
-                
 #~~~~~~~~~~~~~~~~~~~~~~~~~~move~gimbel~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def gimbel_move(pts,frame):
     global heading,pitch     
@@ -152,29 +135,30 @@ def gimbel_move(pts,frame):
     if xRoi > xScr:
         if abs(xRoi - xScr)>=80:    
             heading = 'Move gimbel right'
+            gimbel_right(centerScr)
         else:
             heading = ''
-            #gimbel_right(pts,centerRoi,br)
+        
     if xRoi < xScr:
         if abs(xRoi - xScr)>=80:
-            heading = 'Move gimbel left'    
+            heading = 'Move gimbel left'
+            gimbel_left(centerScr)    
         else:
             heading = ''
-            #gimbel_left(pts,centerRoi,tl)
+            
     if yRoi > yScr:
         if abs(yRoi - yScr)>=80:    
             pitch = 'Move gimbel down'
+            gimbel_down(centerScr)
         else:
             pitch = ''    
-            #gimbel_down(pts,centerRoi,br)
+            
     if yRoi < yScr:
         if abs(yRoi - yScr)>=80:
             pitch = 'Move gimbel up'
+            gimbel_up(centerScr)
         else:
-            pitch = ''    
-        
-        
-            #gimbel_up(pts,centerRoi,tl)
+            pitch = ''  
             
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~traget~Acquired~text~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def tragetAcquired(pts):
@@ -186,9 +170,11 @@ def tragetAcquired(pts):
     if tl[0]>=0 and br[0]>=0:
         font = cv2.FONT_HERSHEY_PLAIN
         cv2.putText(frame,'Traget Acquired',(0,15), font,1,(0,0,255),1)
-
+        
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def lineRoiTocenter(centerRoi,centerSrc):
     cv2.line(frame,(centerRoi[0],centerRoi[1]),(centerScr[0],centerScr[1]),(0,0,255),2) # print line
+   
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def get_pitch():
     return pitch           
@@ -197,7 +183,47 @@ def get_pitch():
 def get_heading():
     return heading           
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~do~camshift~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+def print_data():
+    
+    (h, w) = frame.shape[:2]   # size of screen
+    
+    cv2.rectangle(frame,(w-390,h-225),(w-10,h-35),(248,248,255),1)
+    
+    #Distance to Target
+    x = w-385   
+    y = h-50 
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    cv2.putText(frame,'Distance to Target:20m',(x,y), font,1,(248,248,255),1)
+    
+    #Heading to Target
+    y = y-35
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    cv2.putText(frame,'Heading to Target:50',(x,y), font,1,(248,248,255),1)
+        
+    
+    #vihcle Velocity
+    y = y-35
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    cv2.putText(frame,'Vehicle Velocity:50',(x,y), font,1,(248,248,255),1)
+    
+    
+    
+    #vihcle Attitude 
+    y = y-35
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    cv2.putText(frame,'Vehicle Attitude:3m',(x,y), font,1,(248,248,255),1)
+    
+    
+    #vihcle heading 
+    y = y-35
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    cv2.putText(frame,'Vehicle heading:180',(x,y), font,1,(248,248,255),1)
+    
+    
+    
+    
+        
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~    
 def do_camshift():
     global frame, roiBox
     
@@ -230,7 +256,7 @@ def do_camshift():
     
     gimbel_move(pts,frame)
     lineRoiTocenter(centerRoi,centerScr)
-    
+    print_data()
     
     
     tragetAcquired(pts)
@@ -257,6 +283,8 @@ def main():
     
     # setup the mouse callback
     cv2.namedWindow("frame",cv2.WINDOW_NORMAL)
+    #cv2.namedWindow("frame")
+   
     cv2.setMouseCallback("frame", select_ROI)
 
     # initialize the termination criteria for cam shift, indicating a maximum of ten iterations or movement by a least one pixel along with the bounding box of the ROI

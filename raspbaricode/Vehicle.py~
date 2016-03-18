@@ -94,7 +94,7 @@ class Vehicle():
 
 	def get_gps(self):                      return self.vehicle.gps_0
 
-	def get_heading(self):                  return self.vehicle.heading
+	def get_heading(self):                  return 180 #self.vehicle.heading
 
 	def is_armable(self):                   return self.vehicle.is_armable
 
