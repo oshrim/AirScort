@@ -1,19 +1,24 @@
 import requests
 import json
+from Vehicle import Vehicle
+
 
 class Android():
     
     
+    
     def __init__(self):
-        self.url = 'http://airscort-server1.meteor.com/api/drone/location/drone/1/station/1/event/1/location/11.11111111/22.2222222/3.3/battery/51'
+        # url for server          
+        self.url = 'http://agri-server.cloudapp.net/api/drone/location/drone/1/station/1/event/1/location/11.11111111/22.2222222/3.3/battery/51'          
        
         
-        
     def getLatAndLon(self):
-        print self.url
-        r = requests.post(self.url)
+     
+        #get data from server
+        r= requests.post(self.url,stream=True)
         data =r.json()
-        lat = float(data['lat'])
+        lat = float(data['lat']) # get GPS
         lon = float(data['lon'])
         return [lat,lon]
     
+
